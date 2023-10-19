@@ -95,4 +95,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         player1wins.setText(Integer.toString(wins1));
         player2wins.setText(Integer.toString(wins2));
     }
+    public void playAgain(){
+        count=0;
+        activeplayer=true;
+        for(int i=0;i<buttons.length;i++){
+            gameState[i]=2;
+            buttons[i].setText("");
+        }
+    }
 }
