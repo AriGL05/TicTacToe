@@ -2,6 +2,7 @@ package com.example.tictactoe;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -62,18 +63,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if(activeplayer){
                 wins1++;
                 updateWins();
-                Toast.makeText(this,"Player One Won!",Toast.LENGTH_SHORT).show();
+                String eventData="Player One Won!";
+                Intent intent = new Intent(this, ResultActivity.class);
+                intent.putExtra("textKey",eventData);
+                startActivity(intent);
                 playAgain();
             }
             else{
                 wins2++;
                 updateWins();
-                Toast.makeText(this,"Player Two Won!",Toast.LENGTH_SHORT).show();
+                String eventData="Player Two Won!";
+                Intent intent = new Intent(this, ResultActivity.class);
+                intent.putExtra("textKey",eventData);
+                startActivity(intent);
                 playAgain();
             }
         }
         else if(count==9){
-            Toast.makeText(this,"No One Won!",Toast.LENGTH_SHORT).show();
+            String eventData="It´s a Draw!";
+            Intent intent = new Intent(this, ResultActivity.class);
+            intent.putExtra("textKey",eventData);
+            startActivity(intent);
             playAgain();
         }
         else{
