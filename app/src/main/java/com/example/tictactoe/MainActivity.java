@@ -29,9 +29,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         SharedPreferences sharedPreferences = getSharedPreferences("Wins", MODE_PRIVATE);
-        wins1=sharedPreferences.getInt("winsplayer1",0);
-        wins2=sharedPreferences.getInt("winsplayer2",0);
+        boolean shouldReset = sharedPreferences.getBoolean("resetWins", false);
 
+        if (shouldReset) {
+            // Reset wins to 0
+            wins1 = 0;
+            wins2 = 0;
+
+            // Update SharedPreferences to store the new score
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("winsplayer1", wins1);
+            editor.putInt("winsplayer2", wins2);
+            editor.putBoolean("resetWins", false); // Reset the flag
+            editor.apply();
+        } else {
+            // Load the wins from SharedPreferences
+            wins1 = sharedPreferences.getInt("winsplayer1", 0);
+            wins2 = sharedPreferences.getInt("winsplayer2", 0);
+        }
         for(int i=0;i< buttons.length;i++){
             String buttonID = "btn_"+i;
             int resourceID = getResources().getIdentifier(buttonID,"id",getPackageName());
