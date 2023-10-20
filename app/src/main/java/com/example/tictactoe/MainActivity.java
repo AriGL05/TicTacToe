@@ -3,6 +3,7 @@ package com.example.tictactoe;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +30,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         player1wins = (TextView) findViewById(R.id.player1wins);
         player2wins = (TextView) findViewById(R.id.player2wins);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("Wins", MODE_PRIVATE);
+        wins1 = sharedPreferences.getInt("winsplayer1", 0);
+        wins2 = sharedPreferences.getInt("winsplayer2", 0);
+
+        updateWins();
         for(int i=0;i< buttons.length;i++){
             String buttonID = "btn_"+i;
             int resourceID = getResources().getIdentifier(buttonID,"id",getPackageName());
@@ -36,8 +43,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             buttons[i].setOnClickListener(this);
         }
         count =0;
-        wins1=0;
-        wins2=0;
         activeplayer = true;
     }
 
@@ -66,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String eventData="Player One Won!";
                 Intent intent = new Intent(this, ResultActivity.class);
                 intent.putExtra("textKey",eventData);
+                intent.putExtra("winsplayer1",wins1);
+                intent.putExtra("winsplayer2",wins2);
                 startActivity(intent);
                 playAgain();
             }
@@ -75,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String eventData="Player Two Won!";
                 Intent intent = new Intent(this, ResultActivity.class);
                 intent.putExtra("textKey",eventData);
+                intent.putExtra("winsplayer1",wins1);
+                intent.putExtra("winsplayer2",wins2);
                 startActivity(intent);
                 playAgain();
             }
@@ -83,6 +92,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String eventData="It´s a Draw!";
             Intent intent = new Intent(this, ResultActivity.class);
             intent.putExtra("textKey",eventData);
+            intent.putExtra("winsplayer1",wins1);
+            intent.putExtra("winsplayer2",wins2);
             startActivity(intent);
             playAgain();
         }
@@ -102,8 +113,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return winnerRes;
     }
     public  void updateWins(){
-        player1wins.setText(Integer.toString(wins1));
-        player2wins.setText(Integer.toString(wins2));
+        player1wins.setText(String.valueOf(wins1));
+        player2wins.setText(String.valueOf(wins2));
     }
     public void playAgain(){
         count=0;
@@ -112,5 +123,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             gameState[i]=2;
             buttons[i].setText("");
         }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Save the win counts when the activity is paused
+       wins1=0;
+       wins2=0;
+       updateWins();
     }
 }
