@@ -11,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    private TextView player1wins, player2wins;
     private Button [] buttons = new Button[9];
     private int wins1, wins2, count;
     boolean activeplayer;
@@ -28,14 +27,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        player1wins = (TextView) findViewById(R.id.player1wins);
-        player2wins = (TextView) findViewById(R.id.player2wins);
 
         SharedPreferences sharedPreferences = getSharedPreferences("Wins", MODE_PRIVATE);
-        wins1 = sharedPreferences.getInt("winsplayer1", 0);
-        wins2 = sharedPreferences.getInt("winsplayer2", 0);
+        wins1=sharedPreferences.getInt("winsplayer1",0);
+        wins2=sharedPreferences.getInt("winsplayer2",0);
 
-        updateWins();
         for(int i=0;i< buttons.length;i++){
             String buttonID = "btn_"+i;
             int resourceID = getResources().getIdentifier(buttonID,"id",getPackageName());
@@ -113,8 +109,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return winnerRes;
     }
     public  void updateWins(){
-        player1wins.setText(String.valueOf(wins1));
-        player2wins.setText(String.valueOf(wins2));
+       SharedPreferences sharedPreferences=getSharedPreferences("Wins",MODE_PRIVATE);
+       SharedPreferences.Editor editor = sharedPreferences.edit();
+       editor.putInt("winsplayer1",wins1);
+       editor.putInt("winsplayer2",wins2);
+       editor.apply();
     }
     public void playAgain(){
         count=0;
@@ -123,13 +122,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             gameState[i]=2;
             buttons[i].setText("");
         }
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        // Save the win counts when the activity is paused
-       wins1=0;
-       wins2=0;
-       updateWins();
     }
 }
