@@ -15,17 +15,6 @@ public class Start extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent game = new Intent(Start.this,MainActivity.class);
-                startActivity(game);
-                finish();
-            }
-        },Start_delay);
-    }
-    public void resetScore(View view){
         // Reset the score (wins) here
         int wins1 = 0;
         int wins2 = 0;
@@ -36,5 +25,15 @@ public class Start extends AppCompatActivity {
         editor.putInt("winsplayer1", wins1);
         editor.putInt("winsplayer2", wins2);
         editor.apply();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent game = new Intent(Start.this,MainActivity.class);
+                startActivity(game);
+                finish();
+            }
+        },Start_delay);
     }
+
 }
